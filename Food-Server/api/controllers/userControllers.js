@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcryptjs');
 const upload = require("../middlewares/uploads");
 const Cart = require("../models/Carts");
+const { MAX_LOGIN_ATTEMPTS, LOCK_TIME, PASSWORD_EXPIRATION } = require('../config'); // Adjust path if necessary
 
 const userValidationSchema = Joi.object({
   name: Joi.string().required(),
@@ -20,73 +21,18 @@ const loginValidationSchema = Joi.object({
 
 const createCart = async (user) => {
   try {
-    //check if active cart exists
     const activeCart = await Cart.findOne({
       user_id: user._id,
       status: "CART"
     });
     if (activeCart) return;
 
-    //get cart_no 
     const result = await Cart.findOne({}).sort({ _id: -1 });
     const cart_no = result ? result.cart_no + 1 : 1000;
 
-    const cart = await Cart.create({ cart_no, user_id: user._id });
+    await Cart.create({ cart_no, user_id: user._id });
   } catch (error) {
     throw error;
-  }
-};
-
-const login = async (req, res, next) => {
-  try {
-    const { error } = loginValidationSchema.validate(req.body);
-    if (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({
-        success: false,
-        msg: error.message
-      });
-    }
-    const user = await User.findOne({
-      email: req.body.email
-    }).lean();
-
-    if (!user) {
-      return res.status(httpStatus.UNAUTHORIZED).json({
-        success: false,
-        msg: "User Not Registered!!"
-      });
-    }
-
-    // check if password is valid
-    const checkPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!checkPassword) {
-      return res.status(httpStatus.UNAUTHORIZED).json({
-        success: false,
-        msg: "Email or Password Incorrect!!"
-      });
-    }
-
-    // generate and send a JWT token for the authenticated user
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-
-    const { password, __v, ...data } = user;
-
-    //create cart for the user
-    await createCart(user);
-
-    return res.status(httpStatus.OK).json({
-      success: true,
-      msg: "Login Success!!",
-      data: {
-        ...(data),
-        token
-      }
-    });
-  } catch (error) {
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      msg: error.message
-    });
   }
 };
 
@@ -110,24 +56,105 @@ const register = async (req, res, next) => {
       });
     }
 
-    bcrypt.genSalt(10, async (error, salt) => {
-      bcrypt.hash(req.body.password, salt, async (error, hash) => {
-        const user = await User.create({ ...req.body, password: hash });
-        if (user) {
-          await createCart(user)
-          return res.status(httpStatus.OK).json({
-            success: true,
-            msg: 'Registration Completed'
-          });
-        } else {
-          return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            success: false,
-            msg: "Failed to Register!!"
-          });
-        }
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(req.body.password, salt);
+
+    const user = await User.create({ ...req.body, password: hash });
+    if (user) {
+      await createCart(user);
+      return res.status(httpStatus.OK).json({
+        success: true,
+        msg: 'Registration Completed'
       });
+    } else {
+      return res.status.httpStatus.INTERNAL_SERVER_ERROR.json({
+        success: false,
+        msg: "Failed to Register!!"
+      });
+    }
+  } catch (error) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      msg: error.message
+    });
+  }
+};
+
+const login = async (req, res, next) => {
+  try {
+    const { error } = loginValidationSchema.validate(req.body);
+    if (error) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        success: false,
+        msg: error.message
+      });
+    }
+    const user = await User.findOne({
+      email: req.body.email
+    });
+
+    if (!user) {
+      console.log('User not found');
+      return res.status(httpStatus.UNAUTHORIZED).json({
+        success: false,
+        msg: "User Not Registered!!"
+      });
+    }
+
+    if (user.lockedUntil && user.lockedUntil > Date.now()) {
+      console.log('Account is locked');
+      return res.status(httpStatus.FORBIDDEN).json({
+        success: false,
+        msg: 'Account is locked. Try again later.'
+      });
+    }
+
+    if (user.isPasswordExpired()) {
+      console.log('Password expired');
+      return res.status(httpStatus.FORBIDDEN).json({
+        success: false,
+        msg: 'Password expired. Please reset your password.'
+      });
+    }
+
+    const checkPassword = await bcrypt.compare(req.body.password, user.password);
+    console.log('Entered Password:', req.body.password);
+    console.log('Hashed Password:', user.password);
+    console.log('Password Match:', checkPassword);
+
+    if (!checkPassword) {
+      user.loginAttempts += 1;
+      if (user.loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+        user.lockedUntil = new Date(Date.now() + LOCK_TIME);
+        user.loginAttempts = 0; // Reset attempts after locking
+      }
+      await user.save();
+      console.log('Incorrect password');
+      return res.status(httpStatus.UNAUTHORIZED).json({
+        success: false,
+        msg: "Email or Password Incorrect!!"
+      });
+    }
+
+    user.loginAttempts = 0;
+    await user.save();
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    const { password, __v, ...data } = user.toObject();
+
+    await createCart(user);
+
+    return res.status(httpStatus.OK).json({
+      success: true,
+      msg: "Login Success!!",
+      data: {
+        ...(data),
+        token
+      }
     });
   } catch (error) {
+    console.log('Error:', error);
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
       success: false,
       msg: error.message
@@ -137,8 +164,7 @@ const register = async (req, res, next) => {
 
 const allUser = async (req, res, next) => {
   try {
-    const { page = 1, size = 10, sort =
-      { _id: -1 } } = req.query;
+    const { page = 1, size = 10, sort = { _id: -1 } } = req.query;
 
     let searchQuery = {};
 
@@ -248,7 +274,6 @@ const changePassword = async (req, res) => {
   try {
     const { oldpassword, newpassword } = req.body;
 
-    //check if old password matches
     const checkPassword = await bcrypt.compare(oldpassword, req.user.password);
     if (!checkPassword) {
       return res.status(httpStatus.UNAUTHORIZED).json({
@@ -259,7 +284,8 @@ const changePassword = async (req, res) => {
     bcrypt.genSalt(10, async (error, salt) => {
       bcrypt.hash(newpassword, salt, async (error, hash) => {
         await User.findByIdAndUpdate(req.user._id, {
-          password: hash
+          password: hash,
+          passwordLastChanged: Date.now() // Update password change date
         }, { new: true });
       });
     });
@@ -276,13 +302,10 @@ const changePassword = async (req, res) => {
   }
 };
 
-// delete user
 const deleteUser = async (req, res) => {
   const userId = req.params.id;
   try {
     const deletedUser = await User.findByIdAndDelete(userId);
-    // console.log(deletedUser);
-
     if (!deletedUser) {
       return res.status(httpStatus.NOT_FOUND).json({ message: "User not found" });
     }
