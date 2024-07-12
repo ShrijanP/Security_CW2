@@ -191,7 +191,7 @@ app.use(cookieParser());
 
 // Configure session
 app.use(session({
-  secret: 'yourSecretKey', // Replace with a secure key
+  secret: 'af38da72a21577883617dfcacdaa03c2f927e00d3f205286598d4fbcd14a2775', 
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // Set to true if using https

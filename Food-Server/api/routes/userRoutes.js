@@ -61,7 +61,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userControllers');
 const { verifyUser, verifyAuthorization } = require("../middlewares/authMiddlerware");
-const logUser = require('../../logger'); // Import the logger
+const logUser = require('../../logger'); 
 
 // Log user activities
 const logActivity = (req, res, next) => {
@@ -76,7 +76,7 @@ const logActivity = (req, res, next) => {
   next();
 };
 
-router.use(logActivity); // Apply the middleware to all routes
+router.use(logActivity); 
 
 router.post('/login', userController.login);
 router.post('/register', userController.register);
