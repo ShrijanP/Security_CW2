@@ -49,3 +49,35 @@ const verifyAuthorization = (req, res, next) => {
 };
 
 module.exports = { verifyUser, verifyAuthorization };
+
+
+
+
+
+
+// const jwt = require('jsonwebtoken');
+
+// // Generating JWT token
+// const token = jwt.sign(
+//   {
+//     userId: user._id,
+//     role: user.role,
+//     passwordExpired: false,
+//   },
+//   process.env.SECRETJWT,
+//   { expiresIn: '3d' }
+// );
+
+// // Verifying JWT token
+// const verifyToken = (req, res, next) => {
+//   const token = req.headers.authorization?.split(' ')[1];
+//   if (!token) {
+//     return res.status(401).json({ error: ' no authentication token' });
+//   }
+
+//   jwt.verify(token, process.env.SECRETJWT, (err, payload) => {
+//     if (err) return res.status(401).json({ error: err.message });
+//     req.user = payload;
+//     next();
+//   });
+// };
