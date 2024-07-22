@@ -269,7 +269,7 @@ module.exports.initializeApp = async () => {
 // // Setup the logger
 // app.use(morgan('combined', { stream: accessLogStream }));
 
-// // Use Helmet for security headers
+// Use Helmet for security headers
 // app.use(helmet());
 
 // // Middleware for sanitizing inputs

@@ -45,13 +45,13 @@ function Login() {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="grid min-h-screen bg-center bg-cover w-full items-center px-6 py-12 lg:px-8">
-      <div
-        className="absolute inset-x-0 -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
-        aria-hidden="true"
-      >
-      </div>
-      <div className='max-w-sm w-full mx-auto'>
+    <div 
+      className="relative flex min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)' }} // Replace with your online image URL
+    >
+      <div className="absolute inset-0 bg-black opacity-50 z-0"></div> {/* Overlay for better readability */}
+
+      <div className="relative z-10 flex flex-col justify-center w-full md:w-1/3 h-screen bg-white p-6 rounded-lg shadow-lg ml-auto">
         <img
           className="mx-auto w-auto my-10"
           src="/logo.png"
@@ -61,7 +61,7 @@ function Login() {
           <FaArrowLeft /> Home
         </a>
         <div className="mx-auto w-full">
-          <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight">
+          <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Log in
           </h2>
         </div>
@@ -81,7 +81,7 @@ function Login() {
                 <div>
                   <label
                     id="email"
-                    className="block w-full text-sm font-medium leading-6"
+                    className="block w-full text-sm font-medium leading-6 text-gray-700"
                   >
                     Email Address
                   </label>
@@ -97,7 +97,7 @@ function Login() {
                 <div className="mt-6 w-full">
                   <label
                     htmlFor="pass"
-                    className="block w-full text-sm font-medium leading-6"
+                    className="block w-full text-sm font-medium leading-6 text-gray-700"
                   >
                     Password
                   </label>

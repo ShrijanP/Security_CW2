@@ -42,20 +42,28 @@ function Signup() {
     };
 
     return (
-        <div className="grid min-h-screen w-full items-center px-6 py-12 lg:px-8">
-            <div className='max-w-2xl w-full mx-auto'>
-                <div className='mx-auto my-4 mb-10 w-fit'>
-                    <img src='logo.png' alt="Logo" />
-                </div>
+        <div 
+            className="relative flex min-h-screen bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1580959375944-abd7e991f971?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)' }}
+        >
+            <div className="absolute inset-0 bg-black opacity-50 z-0"></div> {/* Overlay for better readability */}
+
+            <div className="relative z-10 flex flex-col justify-center w-full md:w-1/3 h-screen bg-white p-6 rounded-lg shadow-lg ml-auto">
+                <img
+                    className="mx-auto w-auto my-10"
+                    src="/logo.png"
+                    alt="Logo"
+                />
                 <Link to='/' className='font-semibold text-gray-600 flex items-center gap-3'>
                     <FaArrowLeft /> Home
                 </Link>
-                <div className="sm:mx-auto">
-                    <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight ">
+                <div className="mx-auto w-full">
+                    <h2 className="mt-10 text-left text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Register
                     </h2>
                 </div>
-                <div className="mt-10">
+
+                <div className="mt-10 mx-auto w-full">
                     <Formik
                         enableReinitialize
                         initialValues={{
@@ -71,7 +79,7 @@ function Signup() {
                         {(props) => (
                             <Form className='gap-3 grid grid-cols-2'>
                                 <div>
-                                    <label htmlFor="name" className="block text-sm font-medium leading-6">
+                                    <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-700">
                                         Name
                                     </label>
                                     <div className="mt-2">
@@ -87,7 +95,7 @@ function Signup() {
                                     <FieldError message={props.touched.name && props.errors.name} />
                                 </div>
                                 <div>
-                                    <label htmlFor="mobile_no" className="block text-sm font-medium leading-6">
+                                    <label htmlFor="mobile_no" className="block text-sm font-medium leading-6 text-gray-700">
                                         Mobile Number
                                     </label>
                                     <div className="mt-2">
@@ -106,7 +114,7 @@ function Signup() {
                                     ------------
                                 </div>
                                 <div className='col-span-full -mt-3'>
-                                    <label htmlFor="email" className="block text-sm font-medium leading-6">
+                                    <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-700">
                                         Email address
                                     </label>
                                     <div className="mt-2">
@@ -123,7 +131,7 @@ function Signup() {
                                     <FieldError message={props.touched.email && props.errors.email} />
                                 </div>
                                 <div className="w-full">
-                                    <label htmlFor="password" className="block text-sm font-medium leading-6">
+                                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-700">
                                         Password
                                     </label>
                                     <div className="relative flex items-center justify-center">
@@ -140,7 +148,7 @@ function Signup() {
                                     <FieldError message={props.touched.password && props.errors.password} />
                                 </div>
                                 <div className="w-full">
-                                    <label htmlFor="confirmpassword" className="block text-sm font-medium leading-6">
+                                    <label htmlFor="confirmpassword" className="block text-sm font-medium leading-6 text-gray-700">
                                         Confirm Password
                                     </label>
                                     <div className="relative flex items-center justify-center">
