@@ -13,7 +13,7 @@ function Login() {
   // Function to handle form submission
   const handleFormSubmit = async (values, actions) => {
     try {
-      console.log('Submitting form with values:', values); // Debugging line
+      console.log('Submitting form with values:', values);
       const response = await axios.post('/users/login', values);
 
       if (response.data.success) {
