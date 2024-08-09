@@ -5,8 +5,8 @@ function About() {
         <section className=" items-center grid p-10 xl:h-screen xl:-mt-20 ">
 
             <div className="w-full px-6 mb-10  lg:mb-0   ">
-                {/* <div className="pl-4 mb-6 border-l-4 border-gray-500 ">
-                </div> */}
+                {/* < className="pl-4 mb-6 border-l-4 border-gray-500 ">
+                < */}
                 <h1 className="mt-2 py-4 text-3xl border-b font-semibold md:text-5xl ">
                     About Us
                 </h1>

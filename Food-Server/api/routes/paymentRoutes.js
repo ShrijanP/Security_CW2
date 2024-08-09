@@ -1,16 +1,3 @@
-// const express = require('express');
-// const Payment = require('../models/Payments');
-// const router = express.Router();
-
-// const mongoose = require('mongoose');
-// const Cart = require('../models/Carts'); // Import your Cart model
-// const ObjectId = mongoose.Types.ObjectId;
-
-// // token
-// const verifyToken = require('../middlewares/verifyToken')
-
-// router.post('/', async (req, res) => {
-//     const payment = req.body;
 
 //     try {
 //         // Create a new payment using Mongoose model
