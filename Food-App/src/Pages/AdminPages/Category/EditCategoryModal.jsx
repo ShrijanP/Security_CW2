@@ -67,38 +67,7 @@ function EditCategoryModal({ modalIsOpen, closeModal, getRoute, categoryData }) 
                 />
               </div>
 
-              {/* <div className='mt-4'>
-                <label
-                  id="image"
-                  className="block w-full text-sm font-medium leading-6 text-gray-900"
-                >
-                  Image
-                </label>
-                <input
-                  onChange={(e) => {
-                    setImage(e.target.files[0])
-                  }}
-                  required
-                  type="file"
-                  className="block mt-2 w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-                />
-
-                {
-                  categoryData.image &&
-                  <div>
-                    <label
-                      id="image"
-                      className="block w-full text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Previous Image
-                    </label>
-
-                    <img
-                      src={`${import.meta.env.VITE_APP_BASE_URI}${categoryData?.image}`}
-                    />
-                  </div>
-                }
-              </div> */}
+              
 
               <div className="mt-8 flex gap-4">
                 <button
