@@ -119,22 +119,7 @@ function Orders() {
     return (
         <div className='mx-auto w-full px-8 mt-4'>
 
-            {/* {
-        isAddModalOpen &&
-
-        <AddOrder closeModal={closeAddModal} modalIsOpen={isAddModalOpen}
-          getRoute={getAllOrders}
-        />
-      }
-
-      {
-        isEditModalOpen &&
-
-        <EditOrder closeModal={closeEditModal} modalIsOpen={isEditModalOpen}
-          getRoute={getAllOrders} orderData={selectedOrderData}
-        />
-
-      } */}
+           
 
             <div className="flex items-baseline justify-between  pb-6 pt-5">
                 <h1 className="text-4xl font-bold tracking-tight dark:text-white text-gray-900 ">Order</h1>
