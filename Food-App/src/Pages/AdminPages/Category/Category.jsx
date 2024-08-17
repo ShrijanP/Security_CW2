@@ -139,16 +139,7 @@ function Category() {
                   <tr key={index} className='border-b'>
                     <td className='p-3'>{value?.name}</td>
                     <td className='p-3'>{Date(value?.createdAt)}</td>
-                    {/* <td className='p-3'>
-                      {
-                        value?.image ?
-
-                          <img className='h-10' src={`${import.meta.env.VITE_APP_BASE_URI}${value?.image}`} />
-
-                          :
-                          <label className='error'>No Image</label>
-                      }
-                    </td> */}
+                    
                     <td className='p-3 flex gap-2 flex-wrap max-w-fit'>
                       <button className='bg-red-700 text-white p-2 rounded' onClick={() => {
                         removeItem(value._id)
