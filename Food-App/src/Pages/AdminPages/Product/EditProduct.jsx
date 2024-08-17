@@ -118,13 +118,7 @@ function EditProduct({ modalIsOpen, closeModal, getRoute, productData }) {
             description: productData.description,
             calorie_count: productData.calorie_count,
             price: productData.price,
-            // variant: [{
-            //   sku: "",
-            //   variant_type: [{
-            //     size: "",
-            //     color: ""
-            //   }],
-            // }],
+            
           }}
           onSubmit={async (values, actions) => {
             handleSubmit(values, actions);
