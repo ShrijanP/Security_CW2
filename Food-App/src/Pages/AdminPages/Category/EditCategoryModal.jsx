@@ -11,16 +11,7 @@ function EditCategoryModal({ modalIsOpen, closeModal, getRoute, categoryData }) 
   const editCategory = async (values, actions) => {
     try {
 
-      // let formdata = new FormData
-
-      // if (image) {
-      //   formdata.append('image', image)
-      // }
-
-
-      // for (let value in values) {
-      //   formdata.append(value, values[value])
-      // }
+      
 
 
       let result = await axios.put('/category/' + categoryData?._id, values)
