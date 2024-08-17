@@ -36,13 +36,7 @@ function EditProduct({ modalIsOpen, closeModal, getRoute, productData }) {
       ...files
     ])
 
-    // for (let i in files) {
-    //   const file = files[i];
-    //   if (file instanceof File) {
-    //     const key = Object.values(variant_type[0]).filter(e => e !== '' && e !== undefined).join('-')
-    //     imageData.append(key, file);
-    //   }
-    // }
+   
   }
 
   const handleSubmit = async (values, actions) => {
