@@ -50,11 +50,7 @@ const addProduct = async (req, res) => {
                 });
             }
 
-            // Promise.all(req.files.map(value => {
-            //     const variantIndex = variant.findIndex(ele => ele.sku === value.fieldname);
-            //     const image = variant[variantIndex].images || []
-            //     if (variantIndex >= 0) variant[variantIndex].images = [value.path];
-            // }));
+            
 
             const checkProduct = await Product.findOne({
                 name,
