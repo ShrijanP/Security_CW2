@@ -54,11 +54,7 @@ function EditProduct({ modalIsOpen, closeModal, getRoute, productData }) {
         formData.append('images', imageList[image])
       }
 
-      // Append fields from imageData to formData
-      // for (const [key, value] of imageData.entries()) {
-      //   formData.append(key, value);
-      // }
-
+      
       let result = await axios.put('/products/' + productData._id, formData)
 
       if (result.data.success) {
