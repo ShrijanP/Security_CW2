@@ -12,13 +12,7 @@ function AddCatgeoryModal({ modalIsOpen, closeModal, getRoute }) {
     const addCategory = async (values, actions) => {
         try {
 
-            // let formdata = new FormData
-
-            // formdata.append('image', image)
-
-            // for (let value in values) {
-            //     formdata.append(value, values[value])
-            // }
+           
 
             let result = await axios.post('/category', values)
 
