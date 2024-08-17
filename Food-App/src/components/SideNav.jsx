@@ -46,9 +46,7 @@ function SideNav({ setSideNav, sideNav }) {
               </Link>
 
               {/* <Link className="cursor-pointer" to={"/"}>
-                <div className="w-full py-3 px-4 bg-white rounded flex items-center">
-                  <div className="pl-3">
-                    <label className="font-semibold cursor-pointer">
+               
                       About
                     </label>
                   </div>
