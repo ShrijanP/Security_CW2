@@ -50,10 +50,7 @@ const Header = () => {
 
     const navigation = [
         { name: 'Home', href: '/' },
-        // {
-        //     name: 'Category', href: '/category',
-        //     children: categoryData ? categoryData : []
-        // },
+        
         { name: 'Menu', href: '/product' },
         { name: 'About Us', href: '/about' },
         // { name: 'Contact', href: '/contact' },
